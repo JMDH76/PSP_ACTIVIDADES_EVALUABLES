@@ -1,10 +1,222 @@
 package es.florida.AE02;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
+		ArrayList <Long> tiempomedio = new ArrayList<Long>();
+		long tiempoinicioTotal = System.nanoTime();
+		
+		String nombrefichero = args[0];
+		int procesos = calcularProcesos(nombrefichero);
+		crearFicherosProceso(nombrefichero);
+		
+		for (int i = 1; i <= procesos; i++) {
+			System.out.println("Proceso " + i + " lanzado...\n");
+			
+			int index = nombrefichero.indexOf(".");
+			String prefijofichero = nombrefichero.substring(0, index);
+			String nuevofichero = prefijofichero + "_" + i + ".txt";
+			
+			try {
+				File ficheroProceso = new File(nuevofichero);
+				FileReader fr = new FileReader(ficheroProceso);
+				BufferedReader br = new BufferedReader(fr);
+				String linea = br.readLine();
+				
+				while (linea != null) {
+
+					int index2 = linea.indexOf(",");
+					String nombreNEO = linea.substring(0, index2);
+					linea = linea.substring(index2 + 1);
+
+					int index3 = linea.indexOf(",");
+					double posNEO = Double.parseDouble(linea.substring(0, index3));
+					double velNEO = Double.parseDouble(linea.substring(index3 + 1));
+
+					tiempomedio.add(lanzadorCalculo(nombreNEO, posNEO, velNEO));
+		
+					linea = br.readLine();
+				}
+				br.close();
+				fr.close();
+				ficheroProceso.delete();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				System.out.println("\nError de lectura en el fichero "+ nuevofichero + " " + e);
+				System.out.println("No se ha completado el Proceso " + i);
+			}		
+			
+		}
+		long tiempofinTotal = System.nanoTime();
+		long duracionprocesoTotal = (tiempofinTotal - tiempoinicioTotal)/1000000;
+		
+		int cont = 0;
+		long sumatiempo = 0;
+		for(long tiempo: tiempomedio) {
+			sumatiempo = sumatiempo + tiempo;
+			cont++;
+		}
+		long tiempomedioNEO = sumatiempo/cont;
+		
+		System.out.println("Tiempo medio de ejecucion por NEO: " + tiempomedioNEO + " ms");
+		System.out.println("Tiempo de ejecucion de la app: " + duracionprocesoTotal + " ms");
 	}
 
-}
+	
+	
+	public static void crearFicherosProceso(String nombrefichero) {
+
+		int procesos = calcularProcesos(nombrefichero);
+		int cores = Runtime.getRuntime().availableProcessors();
+		System.out.println("Cores disponibles: " + cores + "\nProcesos: " + procesos + "\n");
+		
+		try {
+			for (int i = 1; i <= procesos; i++) {
+
+				FileInputStream f = new FileInputStream(nombrefichero);
+				InputStreamReader fr = new InputStreamReader(f);
+				BufferedReader br = new BufferedReader(fr);
+
+				int index = nombrefichero.indexOf(".");
+				String prefijofichero = nombrefichero.substring(0, index);
+				String nuevofichero = prefijofichero + "_" + i + ".txt";
+				
+				FileWriter fw = new FileWriter(nuevofichero);
+				BufferedWriter bw = new BufferedWriter(fw);
+
+				String linea = br.readLine();
+
+				int max = cores * i;
+				int min = (max + 1) - cores;
+				int cont = 0;
+
+				while (linea != null) {
+					cont++;
+					if (cont <= max && cont >= min) {
+						bw.write(linea);
+						bw.newLine();
+					}
+					linea = br.readLine();
+				}
+				bw.close();
+				fw.close();
+				br.close();
+				fr.close();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	public static int calcularProcesos(String nombrefichero ) {
+		
+		double cores = Runtime.getRuntime().availableProcessors();
+		double numerolineas = 0;
+		int procesos=0;
+		
+		try {
+			FileInputStream fl = new FileInputStream(nombrefichero);
+			InputStreamReader frl = new InputStreamReader(fl);
+			BufferedReader brl = new BufferedReader(frl);
+			String lineal = brl.readLine();
+			while (lineal != null) {
+				numerolineas++;
+				lineal = brl.readLine();
+			}
+			procesos = (int) Math.ceil(numerolineas / cores);
+			brl.close();
+			frl.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return procesos;
+	}
+	
+
+	
+	public static long lanzadorCalculo(String nombreNEO, Double posicionNEO, Double velocidadNEO) {
+
+		long tiempoinicioNEO = System.nanoTime();
+		try {
+			File ficheroNEO = new File(nombreNEO + ".txt");
+			String nombre = nombreNEO;
+			String clase = "es.florida.AE02.CalculoProbabilidades";
+			String javaHome = System.getProperty("java.home");
+			String javaBin = javaHome + File.separator + "bin" + File.separator + "java";
+			String classpath = System.getProperty("java.class.path");
+			String classname = clase;
+			ArrayList<String> command = new ArrayList<String>();
+			command.add(javaBin);
+			command.add("-cp");
+			command.add(classpath);
+			command.add(classname);
+			command.add(String.valueOf(posicionNEO));
+			command.add(String.valueOf(velocidadNEO));
+			command.add(nombre);
+			// System.out.println(command);
+			ProcessBuilder builder = new ProcessBuilder(command);
+			builder.redirectOutput(ficheroNEO);
+			Process process = builder.start();
+			//process.waitFor();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+
+		}
+
+		boolean ficheroLeido = false;
+
+		while (ficheroLeido != true) {
+			try {
+				File f = new File(nombreNEO + ".txt");
+				FileReader fr;
+
+				fr = new FileReader(f);
+				BufferedReader br = new BufferedReader(fr);
+				String linea = br.readLine();
+
+				double probabilidad = Double.parseDouble(linea);
+
+				if (probabilidad <= 10) {
+					System.out.println("\"" + nombreNEO + "\"	" + probabilidad
+							+ "%	Baja probabilidad de colision. ¡No hay peligro!\n");
+				} else
+					System.err.println("\"" + nombreNEO + "\"	" + probabilidad
+							+ "% 	¡ALERTA! Alta probabilidad de colision... Iniciando protocolos de evacuación del planeta...\n");
+
+				ficheroLeido = true;
+				br.close();
+				fr.close();
+
+			} catch (Exception e) {
+
+			}
+		}
+		long tiempofinNEO = System.nanoTime();
+		long duracionprocesoNEO = (tiempofinNEO - tiempoinicioNEO) / 1000000;
+		return duracionprocesoNEO;
+	}
+
+} 
