@@ -26,32 +26,32 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
-		ArrayList <Long> tiempomedioproceso = new ArrayList<Long>();
-		
+		ArrayList<Long> tiempomedioproceso = new ArrayList<Long>();
+
 		long tiempoinicioTotal = System.nanoTime();
-		
+
 		String nombrefichero = args[0];
 		int procesos = calcularProcesos(nombrefichero);
 		crearFicherosProceso(nombrefichero);
-		
+
 		for (int i = 1; i <= procesos; i++) {
 			System.out.println("Proceso " + i + " lanzado...\n");
-			
+
 			int index = nombrefichero.indexOf(".");
 			String prefijofichero = nombrefichero.substring(0, index);
 			String nuevofichero = prefijofichero + "_" + i + ".txt";
-			
+
 			try {
 				File ficheroProceso = new File(nuevofichero);
 				FileReader fr = new FileReader(ficheroProceso);
 				BufferedReader br = new BufferedReader(fr);
 				String linea = br.readLine();
-				
+
 				while (linea != null) {
 					int index2 = linea.indexOf(",");
 					String nombreNEO = linea.substring(0, index2);
 					linea = linea.substring(index2 + 1);
-					
+
 					int index3 = linea.indexOf(",");
 					double posNEO = Double.parseDouble(linea.substring(0, index3));
 					double velNEO = Double.parseDouble(linea.substring(index3 + 1));
@@ -65,19 +65,19 @@ public class Main {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
-				System.out.println("\nError de lectura en el fichero "+ nuevofichero + " " + e);
+				System.out.println("\nError de lectura en el fichero " + nuevofichero + " " + e);
 				System.out.println("No se ha completado el Proceso " + i);
-			}		
+			}
 		}
 		long tiempofinTotal = System.nanoTime();
-		long duracionprocesoTotal = (tiempofinTotal - tiempoinicioTotal)/1000000;
-		
+		long duracionprocesoTotal = (tiempofinTotal - tiempoinicioTotal) / 1000000;
+
 		long sumatiempo = 0;
-		for(long tiempo: tiempomedioproceso) {
+		for (long tiempo : tiempomedioproceso) {
 			sumatiempo = sumatiempo + tiempo;
 		}
-		long tiempomedioNEO = sumatiempo/tiempomedioproceso.size();
-		
+		long tiempomedioNEO = sumatiempo / tiempomedioproceso.size();
+
 		System.out.println("Tiempo medio de ejecucion por NEO: " + tiempomedioNEO + " ms");
 		System.out.println("Tiempo de ejecucion de la app: " + duracionprocesoTotal + " ms");
 	}
@@ -96,7 +96,7 @@ public class Main {
 		int procesos = calcularProcesos(nombrefichero);
 		int cores = Runtime.getRuntime().availableProcessors();
 		System.out.println("Cores disponibles: " + cores + "\nProcesos: " + procesos + "\n");
-		
+
 		try {
 			for (int i = 1; i <= procesos; i++) {
 
@@ -107,7 +107,7 @@ public class Main {
 				int index = nombrefichero.indexOf(".");
 				String prefijofichero = nombrefichero.substring(0, index);
 				String nuevofichero = prefijofichero + "_" + i + ".txt";
-				
+
 				FileWriter fw = new FileWriter(nuevofichero);
 				BufferedWriter bw = new BufferedWriter(fw);
 				String linea = br.readLine();
@@ -183,8 +183,8 @@ public class Main {
 
 		long tiempoinicioNEO = System.nanoTime();
 		try {
-			File ficheroNEO = new File(nombreNEO + ".txt");
-			String nombre = nombreNEO;
+	
+			File ficheroNEO = new File("FicherosNEOs\\" + nombreNEO + ".txt");
 			String clase = "es.florida.AE02.CalculoProbabilidades";
 			String javaHome = System.getProperty("java.home");
 			String javaBin = javaHome + File.separator + "bin" + File.separator + "java";
@@ -197,21 +197,21 @@ public class Main {
 			command.add(classname);
 			command.add(String.valueOf(posicionNEO));
 			command.add(String.valueOf(velocidadNEO));
-			command.add(nombre);
-			
+
 			ProcessBuilder builder = new ProcessBuilder(command);
 			builder.redirectOutput(ficheroNEO);
-			builder.start();	
-			
+			builder.start();
+
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 
-		//Bucle para comprobar que el fichero ya está escrito y es accesible. Lee y saca mensaje.
+		// Bucle para comprobar que el fichero ya está escrito y es accesible. Lee ysaca mensaje.
 		boolean ficheroLeido = false;
 		while (ficheroLeido != true) {
 			try {
-				File f = new File(nombreNEO + ".txt");
+				File f = new File("FicherosNEOs\\" + nombreNEO + ".txt");
 				FileReader fr;
 
 				fr = new FileReader(f);
@@ -230,8 +230,9 @@ public class Main {
 				ficheroLeido = true;
 				br.close();
 				fr.close();
-
-			} catch (Exception e) {}
+				
+			} catch (Exception e) {
+			}
 		}
 		long tiempofinNEO = System.nanoTime();
 		long duracionprocesoNEO = (tiempofinNEO - tiempoinicioNEO) / 1000000;
