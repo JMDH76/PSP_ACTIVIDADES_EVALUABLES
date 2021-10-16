@@ -13,9 +13,21 @@ import java.util.ArrayList;
 
 public class Main {
 
+	
+	/*Metod Main()
+	 * ACTION:	lee el fichero de NEOs crea los ficheros de cada proceso llamando a crearFicherosProceso().
+	 * Lee cada proceso (fichero NEOs_n.txt) y extrae el nombre, velocidad y distancia de cada línea y se
+	 * la pasa al Process Builder para lanzar el proceso. Con la llamada al lanzador de cálculo capturamos
+	 * el tiempo de procesamiento de ese NEO que pasamos a una Lista para calcular después el promedio y 
+	 * presentarlo junto al tiempo total de ejecución.
+	 * INPUT:	nombre del fichero por argumento (NEOs.txt)
+	 * OUTPUT:	lista de NEOs con probailidad y mensaje por bloques de ejecucuión y tiempos medio y total 
+	 * de procesamiento de los NEOs.
+	 */
 	public static void main(String[] args) {
 
-		ArrayList <Long> tiempomedio = new ArrayList<Long>();
+		ArrayList <Long> tiempomedioproceso = new ArrayList<Long>();
+		
 		long tiempoinicioTotal = System.nanoTime();
 		
 		String nombrefichero = args[0];
@@ -40,13 +52,12 @@ public class Main {
 					int index2 = linea.indexOf(",");
 					String nombreNEO = linea.substring(0, index2);
 					linea = linea.substring(index2 + 1);
-
+					
 					int index3 = linea.indexOf(",");
 					double posNEO = Double.parseDouble(linea.substring(0, index3));
 					double velNEO = Double.parseDouble(linea.substring(index3 + 1));
 
-					tiempomedio.add(lanzadorCalculo(nombreNEO, posNEO, velNEO));
-		
+					tiempomedioproceso.add(lanzadorCalculo(nombreNEO, posNEO, velNEO));
 					linea = br.readLine();
 				}
 				br.close();
@@ -59,25 +70,29 @@ public class Main {
 				System.out.println("\nError de lectura en el fichero "+ nuevofichero + " " + e);
 				System.out.println("No se ha completado el Proceso " + i);
 			}		
-			
 		}
 		long tiempofinTotal = System.nanoTime();
 		long duracionprocesoTotal = (tiempofinTotal - tiempoinicioTotal)/1000000;
 		
-		int cont = 0;
 		long sumatiempo = 0;
-		for(long tiempo: tiempomedio) {
+		for(long tiempo: tiempomedioproceso) {
 			sumatiempo = sumatiempo + tiempo;
-			cont++;
 		}
-		long tiempomedioNEO = sumatiempo/cont;
+		long tiempomedioNEO = sumatiempo/tiempomedioproceso.size();
 		
 		System.out.println("Tiempo medio de ejecucion por NEO: " + tiempomedioNEO + " ms");
 		System.out.println("Tiempo de ejecucion de la app: " + duracionprocesoTotal + " ms");
 	}
 
 	
-	
+	/*Metodo crearFicheroProcesos()
+	 * ACTION: divide el fichero original en varios ficheros cada uno con las líneas 
+	 * correspondientes a un proceso. Muestra los cores disponibles y los procesos
+	 * que va a lanzar.
+	 * INPUT: recibe el nombre del fichero
+	 * OUTPUT:	genera tantos ficheros como procesos con las lineas correspondientes a
+	 * cada uno.	 * 
+	 */
 	public static void crearFicherosProceso(String nombrefichero) {
 
 		int procesos = calcularProcesos(nombrefichero);
@@ -125,26 +140,32 @@ public class Main {
 	}
 	
 	
-	
-	public static int calcularProcesos(String nombrefichero ) {
-		
+	/*Metodo calcularProcesos()
+	 *ACTION: 	lee el fichero, cuenta las líneas y en función de los cores disponibles 
+	 *calcula los procesos necesarios.
+	 *INPUT:	String con nombre del fichero.
+	 *OUTPUT:	devuelve Integer con el numero de procesos necesarios para procesar todas
+	 *las lineas.
+	 */
+	public static int calcularProcesos(String nombrefichero) {
+
 		double cores = Runtime.getRuntime().availableProcessors();
 		double numerolineas = 0;
-		int procesos=0;
-		
+		int procesos = 0;
+
 		try {
-			FileInputStream fl = new FileInputStream(nombrefichero);
-			InputStreamReader frl = new InputStreamReader(fl);
-			BufferedReader brl = new BufferedReader(frl);
-			String lineal = brl.readLine();
+			FileInputStream f = new FileInputStream(nombrefichero);
+			InputStreamReader fr = new InputStreamReader(f);
+			BufferedReader br = new BufferedReader(fr);
+			String lineal = br.readLine();
 			while (lineal != null) {
 				numerolineas++;
-				lineal = brl.readLine();
+				lineal = br.readLine();
 			}
 			procesos = (int) Math.ceil(numerolineas / cores);
-			brl.close();
-			frl.close();
-			
+			br.close();
+			fr.close();
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -152,9 +173,18 @@ public class Main {
 		}
 		return procesos;
 	}
-	
 
 	
+	/*Metodo lanzarCalculo()
+	 * ACTION:	crea el proceso con Process BUilder y hace la llamada a la clase de cálculoProbabilidades 
+	 * para calcular las probabilidades de impacto de un NEO. Crea un fichero por NEO, lo lee y muestra 
+	 * la probabilidad junto a un mensaje apocaliptico o tranquilizador según si la probabilidad es menor 
+	 * o mayorde 10%. Captura el tiempo que tarda en procesar un NEO para pasarlo a Main().
+	 * INPUT:  	recibe el nombre, poiscion y velocidad del NEO desde Main().
+	 * OUTPUT:	Crea un fichero por NEO, devuelve el tiempo que ha tardado en procesar el NEO (Long) y 
+	 * saca por terminal un nmensaje con el nombre, probabilidad de impacto y mensaje según esta última 
+	 * sea mayor o menor a 10%.
+	 */
 	public static long lanzadorCalculo(String nombreNEO, Double posicionNEO, Double velocidadNEO) {
 
 		long tiempoinicioNEO = System.nanoTime();
@@ -174,11 +204,10 @@ public class Main {
 			command.add(String.valueOf(posicionNEO));
 			command.add(String.valueOf(velocidadNEO));
 			command.add(nombre);
-			// System.out.println(command);
+			
 			ProcessBuilder builder = new ProcessBuilder(command);
 			builder.redirectOutput(ficheroNEO);
-			Process process = builder.start();
-			//process.waitFor();
+			builder.start();		
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -186,8 +215,8 @@ public class Main {
 
 		}
 
+		//Bucle para comprobar que el fichero ya está escrito y es accesible. Lee y saca mensaje.
 		boolean ficheroLeido = false;
-
 		while (ficheroLeido != true) {
 			try {
 				File f = new File(nombreNEO + ".txt");

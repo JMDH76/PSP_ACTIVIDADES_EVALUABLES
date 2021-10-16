@@ -12,7 +12,12 @@ public class CalculoProbabilidades {
 	}
 	
 	
-	
+	/*Metodo calculoProbabilidad()
+	 * ACTION:	recibe posicion y velocidad del NEO y calcula la probabilidad siguiendo el 
+	 * algoritmo suminidstrado por el proyecto.
+	 * INPUT:	Doubles con velocidad y posicion del NEO.
+	 * OUTPUT: double con probabilidad de impacto formateada a dos dígitos.
+	 */
 	public static double calculoProbabilidad (double posicionNEO, double velocidadNEO) {
 		
 		double posicionTierra = 1;

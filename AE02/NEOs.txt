@@ -11,3 +11,6 @@ Death by Rock,432.5,842.5
 Ctrl+Alt+Supr,321.8,987.8
 Windows Blue Screen,31.8,999.9
 _Windows 11,99.8,999.9
+_Armageddon,1.1,10.1
+_Apocalypse,100.5,25.7
+_Calamity,127.9,33.9
