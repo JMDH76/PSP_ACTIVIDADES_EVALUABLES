@@ -13,16 +13,16 @@ import java.util.ArrayList;
 
 public class Main {
 
-	
 	/*Metod Main()
-	 * ACTION:	lee el fichero de NEOs crea los ficheros de cada proceso llamando a crearFicherosProceso().
-	 * Lee cada proceso (fichero NEOs_n.txt) y extrae el nombre, velocidad y distancia de cada línea y se
-	 * la pasa al Process Builder para lanzar el proceso. Con la llamada al lanzador de cálculo capturamos
-	 * el tiempo de procesamiento de ese NEO que pasamos a una Lista para calcular después el promedio y 
-	 * presentarlo junto al tiempo total de ejecución.
+	 * ACTION:	lee el fichero de NEOs, crea los ficheros auxiliares de cada proceso llamando a 
+	 * crearFicherosProceso(). Lee cada proceso (fichero aux NEOs_n.txt) y extrae el nombre, velocidad  
+	 * y distancia de cada línea y se la pasa al Process Builder para lanzar el proceso. Con la llamada 
+	 * al lanzador de cálculo capturamos el tiempo de procesamiento de ese NEO que pasamos a una 
+	 * Lista para calcular después el promedio y presentarlo junto al tiempo total de ejecución.
+	 * Borra el fichero auxiliar con procesos.
 	 * INPUT:	nombre del fichero por argumento (NEOs.txt)
-	 * OUTPUT:	lista de NEOs con probailidad y mensaje por bloques de ejecucuión y tiempos medio y total 
-	 * de procesamiento de los NEOs.
+	 * OUTPUT:	lista de NEOs con probailidad y mensaje por bloques de ejecucuión y tiempos medio 
+	 * y total de procesamiento de los NEOs.
 	 */
 	public static void main(String[] args) {
 
@@ -48,7 +48,6 @@ public class Main {
 				String linea = br.readLine();
 				
 				while (linea != null) {
-
 					int index2 = linea.indexOf(",");
 					String nombreNEO = linea.substring(0, index2);
 					linea = linea.substring(index2 + 1);
@@ -63,7 +62,6 @@ public class Main {
 				br.close();
 				fr.close();
 				ficheroProceso.delete();
-
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
@@ -86,12 +84,12 @@ public class Main {
 
 	
 	/*Metodo crearFicheroProcesos()
-	 * ACTION: divide el fichero original en varios ficheros cada uno con las líneas 
-	 * correspondientes a un proceso. Muestra los cores disponibles y los procesos
-	 * que va a lanzar.
+	 * ACTION: divide el fichero original en varios ficheros auxiliares cada uno con 
+	 * las líneas correspondientes a un proceso. Muestra los cores disponibles y los 
+	 * procesos que va a lanzar.
 	 * INPUT: recibe el nombre del fichero
 	 * OUTPUT:	genera tantos ficheros como procesos con las lineas correspondientes a
-	 * cada uno.	 * 
+	 * cada uno.
 	 */
 	public static void crearFicherosProceso(String nombrefichero) {
 
@@ -112,13 +110,11 @@ public class Main {
 				
 				FileWriter fw = new FileWriter(nuevofichero);
 				BufferedWriter bw = new BufferedWriter(fw);
-
 				String linea = br.readLine();
 
 				int max = cores * i;
 				int min = (max + 1) - cores;
 				int cont = 0;
-
 				while (linea != null) {
 					cont++;
 					if (cont <= max && cont >= min) {
@@ -152,7 +148,6 @@ public class Main {
 		double cores = Runtime.getRuntime().availableProcessors();
 		double numerolineas = 0;
 		int procesos = 0;
-
 		try {
 			FileInputStream f = new FileInputStream(nombrefichero);
 			InputStreamReader fr = new InputStreamReader(f);
@@ -165,7 +160,6 @@ public class Main {
 			procesos = (int) Math.ceil(numerolineas / cores);
 			br.close();
 			fr.close();
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -207,13 +201,11 @@ public class Main {
 			
 			ProcessBuilder builder = new ProcessBuilder(command);
 			builder.redirectOutput(ficheroNEO);
-			builder.start();		
-
+			builder.start();	
+			
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (Exception e) {
-
-		}
+		} catch (Exception e) {}
 
 		//Bucle para comprobar que el fichero ya está escrito y es accesible. Lee y saca mensaje.
 		boolean ficheroLeido = false;
@@ -239,13 +231,11 @@ public class Main {
 				br.close();
 				fr.close();
 
-			} catch (Exception e) {
-
-			}
+			} catch (Exception e) {}
 		}
 		long tiempofinNEO = System.nanoTime();
 		long duracionprocesoNEO = (tiempofinNEO - tiempoinicioNEO) / 1000000;
 		return duracionprocesoNEO;
 	}
 
-} 
+}
