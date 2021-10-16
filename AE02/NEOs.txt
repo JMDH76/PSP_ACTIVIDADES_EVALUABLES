@@ -1,0 +1,16 @@
+Armageddon,1.1,10.1
+Apocalypse,100.5,25.7
+Calamity,127.9,33.9
+Cataclysm,429.7,51.4
+Killer no.1,5.5,99.7
+Debacle,1000.5,150.6
+Donald Trump,7.6,957.1
+Tragedy,8.9,1231.8
+Doom,325.1,1975.4
+Death by Rock,432.5,842.5
+Ctrl+Alt+Supr,321.8,987.8
+Windows Blue Screen,31.8,999.9
+_Windows 11,99.8,999.9
+_Armageddon,1.1,10.1
+_Apocalypse,100.5,25.7
+_Calamity,127.9,33.9
