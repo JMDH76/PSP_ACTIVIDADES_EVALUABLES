@@ -13,3 +13,6 @@
 He tenido que añadir algunos NEOs más al fichero para simular varios procesos ya que disponía de 12 cores en mi equipo y necesitaba más líneas.
 
 Por otro lado, en mi equipo los mensajes con "System.err.print" no salen en rojo sino en verde, supongo que será por la configuración de colores de mi Eclipse.
+
+![Image1] (https://floridauniversitaria-my.sharepoint.com/:i:/g/personal/jodohe_floridauniversitaria_es/EVAXS-Un4CRLrvETpo85ue0BxcLcByZdBLHUmVuOlcBbbQ?e=oJ10xJ)
+![Image2] (https://floridauniversitaria-my.sharepoint.com/:i:/g/personal/jodohe_floridauniversitaria_es/EaXict6hFpBMtfFRQIKliNcBiLYchD_BVmxAmTsiDpGHsA?e=Gr9Jwq)
