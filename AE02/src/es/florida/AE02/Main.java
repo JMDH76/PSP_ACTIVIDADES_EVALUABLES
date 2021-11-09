@@ -207,14 +207,12 @@ public class Main {
 		} catch (Exception e) {
 		}
 
-		// Bucle para comprobar que el fichero ya está escrito y es accesible. Lee ysaca mensaje.
+		// Bucle para comprobar que el fichero ya está escrito y es accesible. Lee y saca mensaje.
 		boolean ficheroLeido = false;
 		while (ficheroLeido != true) {
 			try {
 				File f = new File("FicherosNEOs\\" + nombreNEO + ".txt");
-				FileReader fr;
-
-				fr = new FileReader(f);
+				FileReader fr = new FileReader(f);
 				BufferedReader br = new BufferedReader(fr);
 				String linea = br.readLine();
 
