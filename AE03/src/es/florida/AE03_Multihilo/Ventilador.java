@@ -13,7 +13,6 @@ public class Ventilador {
 	 * vuelva a recibir la notificación y se salga
 	 * INPUT: notify() desde apagarVentilador
 	 * OUTPUT: notify() hacia apagarVentilador*/
-	
 	public void encenderVentilador() throws InterruptedException {
 		while (true) {
 			synchronized (this) {

@@ -68,6 +68,8 @@ public class App implements Runnable {
 				flag = false;
 			}
 		}
+		ventOn.join();
+		ventOff.join();
 	}
 
 	/*METODO run()
@@ -84,16 +86,15 @@ public class App implements Runnable {
 		Minero minero = new Minero();
 		String nombre = Thread.currentThread().getName();
 		int contador = 1;
-		
-		while (orosDisponibles > 0) {
-			try {
-				Thread.sleep(minero.tiempoExtraccion);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			while (orosDisponibles > 0) {
+				try {
+					Thread.sleep(minero.tiempoExtraccion);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				minero.extraerRecurso(nombre, contador);
+				contador++;
 			}
-			minero.extraerRecurso(nombre, contador);
-			contador++;
-		}
-		orosRecolectados += minero.bolsa;
+			orosRecolectados += minero.bolsa;
 	}
 }

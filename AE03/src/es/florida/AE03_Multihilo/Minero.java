@@ -27,7 +27,7 @@ public class Minero {
 	public void extraerRecurso(String nombre, int turno) {
 
 		for (int i = 0; i < 1e8; i++) {
-			double sobrecargaprocesador = Math.sqrt((double) (i));
+			double sobrecargaCPU = Math.sqrt((double) (i));
 		}
 		synchronized (this) {
 			if (App.orosDisponibles > 0) {
