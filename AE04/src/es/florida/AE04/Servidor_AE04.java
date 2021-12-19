@@ -16,12 +16,10 @@ public class Servidor_AE04 {
 	 * Output:	Lanza un hilo al cliente que ha hecho la solicitud. */
 	public static void main(String[] args) throws IOException, InterruptedException {
 		
-		//Creamos el objeto servidor, lo arrancamos y dejamos a la escucha
 		int numPuerto = 1234;
 		ServerSocket socketEscucha = new ServerSocket(numPuerto);
 		System.err.println("SERVIDOR >>> Arranca el servidor. Puerto " + numPuerto + " escuchando...");
 		
-		//Creamos hilo y con bucle dejamos de nuevo el servidor a la escucha
 		while(true) {
 			Socket conexion = socketEscucha.accept();
 			Servidor_AE04_Hilo sc = new Servidor_AE04_Hilo(conexion);
