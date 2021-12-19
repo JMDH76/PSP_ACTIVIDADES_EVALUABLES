@@ -7,13 +7,15 @@ import java.io.Serializable;
 
 public class Password implements Serializable {
 
-	String textoPlano, encrypt;
+	String textoPlano, encrypt, tipoEncriptado;
 
 	public Password(String textoPlano, String encrypt) {
 		super();
 		this.textoPlano = textoPlano;
 		this.encrypt = encrypt;
 	}
+
+	
 
 	public Password() {
 		super();

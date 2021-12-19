@@ -5,8 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Servidor_AE04 {
-
-	static String name;
 	
 	/* Method:	main()
 	 * Action:	Crea el objeto Servidor y lo deja a la escucha. Cuenado recibe una petición
@@ -24,7 +22,7 @@ public class Servidor_AE04 {
 			Socket conexion = socketEscucha.accept();
 			Servidor_AE04_Hilo sc = new Servidor_AE04_Hilo(conexion);
 			Thread hilo = new Thread (sc);
-			name = hilo.getName();
+			String name = hilo.getName();
 			System.err.println("\nSERVIDOR >>> ¡Conexión recibida! Lanzando hilo... " + name);
 			hilo.start();
 		}	

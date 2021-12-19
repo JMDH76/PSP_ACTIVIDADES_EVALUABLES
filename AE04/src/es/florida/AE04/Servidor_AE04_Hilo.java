@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class Servidor_AE04_Hilo implements Runnable {
@@ -26,39 +29,36 @@ public class Servidor_AE04_Hilo implements Runnable {
 	 * 			(2) Recibe de vuelta el objeto con la contraseña escrita por le usuario.
 	 * 			(3) Encripta la contraseña con la función: 'encriptar(contrasenya) y la sustituye en el objeto
 	 * 			(4) Devuelve el objeto al Cliente para que lo presente por consola.
-	 * Input:	Nombre del hilo / Objeto con contraseña en texto plano, 
+	 * Input:	Objeto con contraseña en texto plano.
 	 * Output:	Objeto vacio para que rellene usuario desde Cliente / Objeto completo con la contraseña
 	 * 			encriptada.*/
 	@Override
 	public void run() {
 
 		try {
-		
-			String threadName = Servidor_AE04.name;	//Obtenemos nombre del hilo desde clase Servidor_AE04
-		
 			//(1)
 			ObjectOutputStream outObjeto = new ObjectOutputStream(socket.getOutputStream());
 			Password contrasenya = new Password("Contraseña", "Encriptado");
 			outObjeto.writeObject(contrasenya);
-			System.err.println("SERVIDOR >>> " + threadName + " >>> Enviado objeto a CLIENTE: " + contrasenya.passwordToString());
+			System.err.println("SERVIDOR >>> " + Thread.currentThread().getName()  + " >>> Enviado objeto a CLIENTE: " + contrasenya.passwordToString());
 
 			//(2)
 			ObjectInputStream inObjeto = new ObjectInputStream(socket.getInputStream());	
 			Password contrasenyaMod = (Password) inObjeto.readObject();						
-			System.err.println("SERVIDOR >>> " + threadName + " >>> Recibida contraseña de CLIENTE: " + contrasenyaMod.getTextoPlano());
-			System.err.println("SERVIDOR >>> " + threadName + " >>> Encriptando...");
+			System.err.println("SERVIDOR >>> " + Thread.currentThread().getName()  + " >>> Recibida contraseña de CLIENTE: " + contrasenyaMod.getTextoPlano());
+			System.err.println("SERVIDOR >>> " + Thread.currentThread().getName()  + " >>> Encriptando...");
 			Thread.sleep(2000);
-			
+
 			//(3)
 			String contrasenyaEncriptada = encriptar(contrasenyaMod.textoPlano);
 			contrasenyaMod.setEncrypt(contrasenyaEncriptada);
-			System.err.println("SERVIDOR >>> " + threadName + " >>> Encriptación finalizada: " + contrasenyaEncriptada);
+			System.err.println("SERVIDOR >>> " + Thread.currentThread().getName()  + " >>> Encriptación finalizada: " + contrasenyaEncriptada);
 			Thread.sleep(1000);
 			
 			//(4)
 			outObjeto = new ObjectOutputStream(socket.getOutputStream());
 			outObjeto.writeObject(contrasenyaMod);
-			System.err.println(	"SERVIDOR >>> " + threadName + " >>> Enviado objeto completo a CLIENTE: " + contrasenyaMod.passwordToString() );
+			System.err.println(	"SERVIDOR >>> " + Thread.currentThread().getName()  + " >>> Enviado objeto completo a CLIENTE: " + contrasenyaMod.passwordToString() );
 			
 			inObjeto.close();
 			outObjeto.close();
