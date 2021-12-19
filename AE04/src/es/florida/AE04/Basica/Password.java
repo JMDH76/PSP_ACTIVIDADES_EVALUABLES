@@ -1,4 +1,4 @@
-package es.florida.AE04;
+package es.florida.AE04.Basica;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class Password implements Serializable {
 
-	String textoPlano, encrypt, tipoEncriptado;
+	String textoPlano, encrypt;
 
 	public Password(String textoPlano, String encrypt) {
 		super();

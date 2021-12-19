@@ -1,4 +1,4 @@
-package es.florida.AE04;
+package es.florida.AE04.Basica;
 
 import java.io.BufferedReader;
 import java.io.IOException;
