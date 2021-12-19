@@ -18,7 +18,7 @@ public class Servidor_AE04 {
 		ServerSocket socketEscucha = new ServerSocket(numPuerto);
 		System.err.println("SERVIDOR >>> Arranca el servidor. Puerto " + numPuerto + " escuchando...");
 
-		while (true) {
+		while (true) { 
 			Socket conexion = socketEscucha.accept();
 			Servidor_AE04_Hilo sc = new Servidor_AE04_Hilo(conexion);
 			Thread hilo = new Thread(sc);

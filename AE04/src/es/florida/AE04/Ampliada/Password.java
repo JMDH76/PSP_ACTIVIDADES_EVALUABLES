@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /*	Clase Password con sus constructores, getters y setters.
 	Implementa Sererializable.
-	Añadimos 'String tipo' al objeto para identificar el tipo de cifrado que puede elegir el usuario.*/
+	Añadimos 'String tipo' al objeto para identificar el tipo de cifrado que puede elegir el usuario. */
 
 public class Password implements Serializable {
 

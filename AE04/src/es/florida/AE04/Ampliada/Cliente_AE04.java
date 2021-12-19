@@ -11,7 +11,7 @@ public class Cliente_AE04 {
 	
 	/* Method:	main()
 	 * Action:	(1) Arranca el cliente y lanza una petición al Servidor a través del host y puerto en el 
-	 * 			que está a la escucha.
+	 * 				que está a la escucha.
 	 * 			(2) Recibe del Servidor un objeto vacío que el usuario debe rellenar.
 	 * 			(3)	Usuario introduce contraseña y elige el tipo de encriptado por consola.
 	 * 			(4) Devuelve objeto al Servidor para encriptarlo. 
@@ -41,8 +41,7 @@ public class Cliente_AE04 {
 		while (flag == false) {
 			System.out.print("\nCLIENTE >>> Tipo de cifrado: \n	    - 1. Normal.\n	    - 2. MD5 \n 	      Elija una opción: ");
 			texto = teclado.nextLine();
-			if (texto.equals("1") || texto.equals("2"))
-				flag = true;
+			if (texto.equals("1") || texto.equals("2")) flag = true;
 		}
 		pass.setTipo(texto);
 
@@ -56,10 +55,8 @@ public class Cliente_AE04 {
 		inObjeto = new ObjectInputStream(socket.getInputStream());
 		pass = (Password) inObjeto.readObject();
 		String tipo = pass.getTipo();
-		if (tipo.equals("2"))
-			cifrado = "MD5";
-		else
-			cifrado = "Standard";
+		if (tipo.equals("2")) cifrado = "MD5";
+		else cifrado = "Standard";
 		System.out.println(
 				"\nCLIENTE >>> Recibido objeto completo de SERVIDOR: \n	    - Contraseña:	" + pass.getTextoPlano()
 						+ "\n	    - Encriptado:	" + pass.getEncrypt() + "\n	    - Cifrado:		" + cifrado);
