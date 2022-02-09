@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "f5952774-015b-47ec-a177-aa4f5749c8ac",
+		"name": "PSP_AE05_ServiciosRed",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Solicitar Temperatura",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n"
+				},
+				"url": {
+					"raw": "127.0.0.1:7777/estufa?temperaturaActual",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "7777",
+					"path": [
+						"estufa"
+					],
+					"query": [
+						{
+							"key": "temperaturaActual",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subir temperatura",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "setTemperatura=18\r\n"
+				},
+				"url": {
+					"raw": "127.0.0.1:7777/estufa",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "7777",
+					"path": [
+						"estufa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bajar temperatura",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "setTemperatura=12"
+				},
+				"url": {
+					"raw": "127.0.0.1:7777/estufa",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "7777",
+					"path": [
+						"estufa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Avería",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "notificarAveria:email_remitente=jmdh.dam@gmail.com;pass_remitente=Angela2017"
+				},
+				"url": {
+					"raw": "127.0.0.1:7777/estufa?=",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "7777",
+					"path": [
+						"estufa"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
